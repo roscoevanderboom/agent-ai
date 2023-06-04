@@ -11,7 +11,7 @@
 - `pip install llama-cpp-python`
 - `pip install llama-cpp-python[server]`
 
-##### Important Disclaimer**
+### Important Disclaimer**
 This is a work in progress and is presented as is with no developer support. PRs and collaborations are greatly welcomed and appreciated.
 
 I'm not a professional developer. I do this as a hobby and simply love sharing / working on projects relating to AI, blockchains, IPFS, and decentralized systems.
