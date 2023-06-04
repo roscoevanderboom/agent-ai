@@ -1,0 +1,74 @@
+{
+  "build": {
+    "beforeDevCommand": "yarn dev",
+    "beforeBuildCommand": "yarn build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist",
+    "withGlobalTauri": false
+  },
+  "package": {
+    "productName": "agent-ai",
+    "version": "0.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "dialog": {
+        "all": true
+      },
+      "fs": {
+        "readDir": true,
+        "readFile": true,
+        "scope": ["$HOME/models"]
+      },
+      "http": {
+        "all": true,
+        "scope": ["http://localhost:8000/**"]
+      },
+      "path": {
+        "all": true
+      },
+      "shell": {
+        "all": true,
+        "scope": [
+          {
+            "name": "server",
+            "cmd": "python",
+            "args": true
+          }
+        ]
+      }
+    },
+    "bundle": {
+      "active": true,
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "identifier": "agent-ai",
+      "targets": "all"
+    },
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": false
+    },
+    "windows": [
+      {
+        "title": "Agent AI",
+        "fullscreen": false,
+        "resizable": true,
+        "minWidth": 800,
+        "minHeight": 600,
+        "center": true
+      }
+    ],
+    "systemTray": {
+      "iconPath": "icons/32x32.png"
+    }
+  }
+}

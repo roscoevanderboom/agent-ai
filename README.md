@@ -3,8 +3,12 @@
 ## Welcome to your personal AI Agent
 
 ### Current features
-- Start / Stop webserver to interact with local model
+- Start / Stop python web server to interact with local model
 - Conversational chatbot persisted using local storage
+
+### Future features
+- Altering AI agents behavior during conversations
+- Embedding vector stores to create longer context
 
 ### Requirements
 - Python
