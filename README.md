@@ -14,6 +14,7 @@
 - Multiple chats
 
 ### Requirements
+- create a folder called $HOME/models (I'll update this so the app simply creates the folder if it doesn't exist.)
 - Python
 - `pip install llama-cpp-python`
 - `pip install llama-cpp-python[server]`
