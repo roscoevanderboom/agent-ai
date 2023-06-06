@@ -9,6 +9,9 @@
 ### Future features
 - Altering AI agents behavior during conversations
 - Embedding vector stores to create longer context
+- Use SurrealDB to persist memory
+- Replace Python webserver with Rust Llama implementation for more control
+- Multiple chats
 
 ### Requirements
 - Python
