@@ -1,6 +1,6 @@
 # Agent-愛
 
-## Welcome to your personal AI Agent
+## Introducing your personal AI Agent
 
 ### Current features
 - Start / Stop python web server to interact with local model
