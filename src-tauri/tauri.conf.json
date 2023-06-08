@@ -35,6 +35,11 @@
             "name": "server",
             "cmd": "python",
             "args": true
+          },
+          {
+            "name": "surreal",
+            "cmd": "surreal",
+            "args": ["start", "--bind", "0.0.0.0:8911","--log", "info", "--user", "root", "--pass", "root", "file://../surreal"]
           }
         ]
       }

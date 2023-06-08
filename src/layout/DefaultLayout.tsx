@@ -12,7 +12,7 @@ function DefaultLayout({ children }: Props) {
     <>
       <AppHeader />
       <AppDrawer />
-      <Container sx={{ height: "calc(100vh - 56px)" }}>{children}</Container>
+      <Container sx={{ height: "calc(100vh - 56px)", }}>{children}</Container>
     </>
   );
 }

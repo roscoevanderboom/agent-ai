@@ -5,12 +5,16 @@ export interface InitialState {
   drawer: boolean;
   isServerRunning: boolean;
   serverOutput: string[];
-  dispatch: (_t: string, _p: any) => void;
+  conversations: ConversationProps[];
+  activeConversation: ConversationProps;
+  dispatch: (_: string, _: any) => void;
   toggleTheme: () => void;
   toggleDrawer: () => void;
-  toggleLoading: (val: boolean) => void;
-  setIsServerRunning: (val: boolean) => void;
-  handleServerOutput: (_val: string | []) => void;
+  toggleLoading: (_: boolean) => void;
+  setIsServerRunning: (_: boolean) => void;
+  getConversations: () => void;
+  handleServerOutput: (_: string | []) => void;
+  setActiveConversation: (_:ConversationProps) => void
 }
 
 export type Dispatch = (type: string, payload: any) => void;
@@ -19,7 +23,6 @@ export interface ActionProps {
   payload: any;
   type: string;
 }
-
 
 export interface UserThemeLocalStorage {
   key: string;
@@ -33,4 +36,11 @@ export type DeepPartial<T> = {
 export interface MessageProps {
   role: string;
   content: string;
+}
+
+export interface ConversationProps {
+  id: string;
+  name: string;
+  aiRole: string;
+  messageHistory: MessageProps[];
 }

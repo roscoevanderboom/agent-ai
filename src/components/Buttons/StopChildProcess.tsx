@@ -7,7 +7,7 @@ function StopChildProcess() {
   const { isServerRunning, toggleLoading } = useAppContext();
 
   const handleStopProcess = () => {
-    toggleLoading(true);
+    toggleLoading(true)
     invoke("kill_child_processes");
   };
 

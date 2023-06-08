@@ -1,30 +1,19 @@
 import { useAppContext } from "@/App";
 import { CHAT_COMPLETION_URL } from "@/constants/urls";
 import { MessageProps } from "@/interfaces";
-import { useLocalStorage } from "@mantine/hooks";
+import parsePostRequestBody from "@/utils/parsePostRequestBody";
 import axios from "axios";
 
 export default function useFetch() {
-  const { toggleLoading } = useAppContext();
-  const [system_config] = useLocalStorage<string>({
-    key: "system_config",
-    defaultValue: "",
-  });
-  const [history] = useLocalStorage<MessageProps[]>({
-    key: "chat_history",
-    defaultValue: [],
-  });
+  const { toggleLoading, activeConversation } = useAppContext();
 
-  async function postChat(): Promise<string | false> {
+  async function postChat(messages: MessageProps[]): Promise<string | false> {
     toggleLoading(true);
     try {
       const url = CHAT_COMPLETION_URL;
       const response = await axios.post(
         url,
-        {
-          messages: [{ role: "system", content: system_config }, ...history],
-          max_tokens: 500,
-        },
+        parsePostRequestBody(activeConversation, messages),
         { headers: { "Content-Type": "application/json" } }
       );
 

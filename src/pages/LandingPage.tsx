@@ -1,23 +1,46 @@
-import DefaultLayout from "@/layout/DefaultLayout";
-import { useLocalStorage } from "@mantine/hooks";
-import ChatContainer from "@/components/ChatContainer";
-import { useAppContext } from "@/App";
-import AssistantConfig from "@/components/ChatContainer/AssistantConfig";
-import ServerNotRunning from "@/components/ChatContainer/ServerNotRunning";
+import DefaultBox from "@/components/Boxes/DefaultBox";
+import { Paper, Title, List, Text } from "@mantine/core";
 
 function LandingPage() {
-  const { isServerRunning } = useAppContext();
-  const [system_config] = useLocalStorage<string>({
-    key: "system_config",
-    defaultValue: "",
-  });
-
   return (
-    <DefaultLayout>
-      {!isServerRunning && <ServerNotRunning />}
-      {!system_config && isServerRunning && <AssistantConfig />}
-      {system_config && isServerRunning && <ChatContainer />}
-    </DefaultLayout>
+    <DefaultBox>
+      <Paper p={12} withBorder>
+        <Title my={15} align="center" size="h2">
+          Welcome to your personal AI Agent{" "}
+        </Title>
+        <Title my={8} size="h4">
+          Current features
+        </Title>
+        <List>
+          <List.Item>
+            Start / Stop webserver to interact with local model
+          </List.Item>
+          <List.Item>
+            Conversational chatbot persisted using local storage
+          </List.Item>
+        </List>
+        <Title my={8} size="h4">
+          Requirements
+        </Title>
+        <List>
+          <List.Item>Python</List.Item>
+          <List.Item>pip install llama-cpp-python</List.Item>
+          <List.Item>pip install llama-cpp-python[server]</List.Item>
+        </List>
+        <Title my={8} size="h5">
+          Important Disclaimer**
+        </Title>
+        <Text>
+          This is a work in progress and is presented as is with no developer
+          support. PRs and collaborations are greatly welcomed and appreciated.
+        </Text>
+        <Text>
+          I'm not a prefessional developer. I do this as a hobby and simply love
+          sharing / working on projects relating to AI, blockchains, IPFS, and
+          decentralized systems.
+        </Text>
+      </Paper>
+    </DefaultBox>
   );
 }
 

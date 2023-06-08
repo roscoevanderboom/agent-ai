@@ -1,6 +1,13 @@
 import { Box, Text, ScrollArea } from "@mantine/core";
+import { useEffect, useState } from "react";
 
 function Loading({ serverOutput }: { serverOutput: string[] }) {
+  const [console, setConsole] = useState<string[]>([]);
+
+  useEffect(() => {
+    setConsole(serverOutput.reverse());
+  }, [serverOutput]);
+
   return (
     <Box p={50} sx={{ height: "100vh", display: "flex" }}>
       <ScrollArea
@@ -11,7 +18,7 @@ function Loading({ serverOutput }: { serverOutput: string[] }) {
           flexDirection: "column-reverse",
         }}
       >
-        {serverOutput.map((text, i) => (
+        {console.map((text, i) => (
           <Text key={i.toString()}>{text}</Text>
         ))}
       </ScrollArea>

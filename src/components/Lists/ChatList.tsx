@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Paper, Text, ScrollArea, ActionIcon } from "@mantine/core";
 import Prism from "prismjs";
 import { MessageProps } from "@/interfaces";
-import { useLocalStorage } from "@mantine/hooks";
 import { IconTrash } from "@tabler/icons-react";
 import { upperFirst } from "@mantine/hooks";
+import { useAppContext } from "@/App";
+import { surrealDB } from "@/lib/surrealdb";
 
 function analyzeMessageContent(content: string): string {
   const codeRegex = /```([\s\S]+?)```/g; // Regular expression to detect code blocks enclosed in triple backticks
@@ -19,25 +20,28 @@ function analyzeMessageContent(content: string): string {
 }
 
 export default function ChatList() {
-  const [history, setHistory] = useLocalStorage<MessageProps[]>({
-    key: "chat_history",
-    defaultValue: [],
-  });
+  const { activeConversation, setActiveConversation } = useAppContext();
   const [formattedMessages, setFormattedMessages] = useState<MessageProps[]>(
     []
   );
 
-  const handleDeletePost = (content: string) => {
-    setHistory(history.filter((el) => el.content !== content));
+  const handleDeletePost = async (content: string) => {
+    activeConversation.messageHistory =
+      activeConversation.messageHistory.filter((el) => el.content !== content);
+    let db = await surrealDB();
+    let res = await db.update(activeConversation.id, { ...activeConversation });
+    setActiveConversation(res);
   };
 
   useEffect(() => {
-    const formattedMessages = history.map((message: MessageProps) => ({
-      ...message,
-      content: analyzeMessageContent(message.content),
-    }));
+    const formattedMessages = activeConversation.messageHistory.map(
+      (message: MessageProps) => ({
+        ...message,
+        content: analyzeMessageContent(message.content),
+      })
+    );
     formattedMessages && setFormattedMessages(formattedMessages.reverse());
-  }, [history]);
+  }, [activeConversation.messageHistory]);
 
   return (
     <ScrollArea
@@ -46,7 +50,6 @@ export default function ChatList() {
         flexGrow: 1,
         display: "flex",
         flexWrap: "wrap",
-        flexDirection: "column-reverse",
       }}
     >
       {formattedMessages.map((el: MessageProps, i: number) => (
@@ -58,12 +61,11 @@ export default function ChatList() {
             <IconTrash size={15} color="red" />
           </ActionIcon>
           <Text size="lg">{upperFirst(el.role)}:</Text>
-          <Text sx={{ maxWidth: "100vw", display: "flex", flexWrap: "wrap" }}>
+          <Text sx={{ display: "flex", flexWrap: "wrap" }}>
             {el.content ? (
               <div
-                style={{ maxWidth: "100vw" }}
                 dangerouslySetInnerHTML={{
-                  __html: el.content
+                  __html: el.content,
                 }}
               />
             ) : null}

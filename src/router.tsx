@@ -1,11 +1,21 @@
 import { createMemoryRouter } from "react-router-dom";
 import App from "./App";
-import LandingPage from "./pages/LandingPage";
+import MainView from "./pages/MainView";
+import AvailableModels from "./pages/AvailableModels";
+import CreateConversation from "./pages/CreateConversation";
 
 export const routes = [
   {
-    element: <LandingPage />,
-    path: "/landing-page",
+    element: <MainView />,
+    path: "/main-view",
+  },
+  {
+    element: <AvailableModels />,
+    path: "/available-models",
+  },
+  {
+    element: <CreateConversation />,
+    path: "/create-conversation",
   },
 ];
 
@@ -16,8 +26,5 @@ export default createMemoryRouter(
       element: <App />,
       children: routes,
     },
-  ],
-  {
-    initialEntries: ["/landing-page"],
-  }
+  ]
 );

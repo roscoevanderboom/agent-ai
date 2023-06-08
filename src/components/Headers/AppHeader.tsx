@@ -4,7 +4,6 @@ import SettingsModal from "../Modals/SettingsModal";
 import StopChildProcess from "../Buttons/StopChildProcess";
 import ConsoleModal from "../Modals/ConsoleModal";
 import ModelInfoModal from "../Modals/ModelInfoModal";
-import UpdateAIRole from "../Modals/UpdateAIRole";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -32,7 +31,6 @@ export default function AppHeader() {
         </Group>
 
         <Group>
-          <UpdateAIRole />
           <StopChildProcess />
           <ModelInfoModal />
           <ConsoleModal />

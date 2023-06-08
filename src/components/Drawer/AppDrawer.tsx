@@ -1,41 +1,52 @@
 import { useAppContext } from "@/App";
-import { Drawer, NavLink } from "@mantine/core";
-import { FileEntry, readDir } from "@tauri-apps/api/fs";
-import { useEffect, useState } from "react";
-import useServer from "@/hooks/useServer";
-import { models_folder } from "@/constants/paths";
+import { ConversationProps } from "@/interfaces";
+import { surrealDB } from "@/lib/surrealdb";
+import { Button, Drawer, NavLink, Box, ActionIcon } from "@mantine/core";
+import { IconMessage, IconTrash } from "@tabler/icons-react";
+import { ask } from "@tauri-apps/api/dialog";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+const resetConvo = {
+  id: "",
+  name: "",
+  aiRole: "",
+  messageHistory: [],
+};
 
 export default function AppDrawer() {
-  const { drawer, toggleDrawer, isServerRunning } = useAppContext();
-  const { startServer } = useServer();
-  const [models, setModels] = useState<FileEntry[]>([]);
-  const [activeModel, setActiveModel] = useState<string>("");
+  const nav = useNavigate();
+  const {
+    drawer,
+    toggleDrawer,
+    conversations,
+    activeConversation,
+    setActiveConversation,
+    getConversations,
+  } = useAppContext();
 
-  const getModels = async () => {
-    const contents: FileEntry[] = await readDir(await models_folder());
-    if (contents) {
-      setModels(contents.filter((m) => m.name?.includes(".bin")));
-    }
+  const handleSelectConversation = (convo: ConversationProps) => {
+    setActiveConversation(convo);
   };
 
-  const handleSelectModel = async (name: string | undefined) => {
-    if (name && !isServerRunning) {
-      startServer(name);
-      setActiveModel(name);
-    } else {
-      window.alert("Stop the current server before loading a new model.");
+  const handleCreateNewConvo = () => {
+    nav("/create-conversation");
+    toggleDrawer();
+  };
+
+  const handleDeletedConversation = async (id: string) => {
+    let confirm = await ask("Are you sure?");
+    if (confirm) {
+      let db = await surrealDB();
+      await db.delete(id);
+      getConversations();
+      setActiveConversation(resetConvo);
     }
   };
 
   useEffect(() => {
-    getModels();
+    getConversations();
   }, [drawer]);
-
-  useEffect(() => {
-    if (!isServerRunning) {
-      setActiveModel("");
-    }
-  }, [isServerRunning]);
 
   return (
     <>
@@ -43,16 +54,35 @@ export default function AppDrawer() {
         <Drawer.Overlay />
         <Drawer.Content>
           <Drawer.Header mb={8}>
-            <Drawer.Title>Models</Drawer.Title>
+            <Drawer.Title>Convesations</Drawer.Title>
             <Drawer.CloseButton color="dark" />
           </Drawer.Header>
-          {models.map((model, i) => (
+          <Drawer.Body sx={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              mt={12}
+              rightIcon={<IconMessage />}
+              onClick={handleCreateNewConvo}
+            >
+              New conversation
+            </Button>
+          </Drawer.Body>
+          {conversations.map((convo, i) => (
             <Drawer.Body key={i.toString()}>
-              <NavLink
-                active={activeModel === model.name}
-                label={model.name}
-                onClick={() => handleSelectModel(model.name)}
-              />
+              <Box
+                display="flex"
+                sx={{ justifyContent: "space-between", alignItems: "center" }}
+              >
+                <NavLink
+                  active={
+                    activeConversation && activeConversation.name === convo.name
+                  }
+                  label={convo.name}
+                  onClick={() => handleSelectConversation(convo)}
+                />
+                <ActionIcon onClick={() => handleDeletedConversation(convo.id)}>
+                  <IconTrash color="red" size={20} />
+                </ActionIcon>
+              </Box>
             </Drawer.Body>
           ))}
         </Drawer.Content>

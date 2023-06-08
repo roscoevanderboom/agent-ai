@@ -9,10 +9,17 @@ import {
 } from "@mantine/core";
 import { useAppContext } from "@/App";
 import { IconDeviceDesktop } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 
 function ConsoleModal() {
   const { serverOutput } = useAppContext();
   const [opened, { open, close }] = useDisclosure(false);
+  const [console, setConsole] = useState<string[]>([]);
+
+  useEffect(() => {
+    setConsole(serverOutput.reverse());
+  }, [serverOutput]);
+
   return (
     <>
       <Modal opened={opened} onClose={close} title="Server logs" centered>
@@ -25,7 +32,7 @@ function ConsoleModal() {
               flexDirection: "column-reverse",
             }}
           >
-            {serverOutput.map((text, i) => (
+            {console.map((text, i) => (
               <Text key={i.toString()}>{text}</Text>
             ))}
           </ScrollArea>
