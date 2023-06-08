@@ -1,6 +1,6 @@
 # Agent-愛
 
-## Welcome to your personal AI Agent
+## Introducing your personal AI Agent
 
 ### Current features
 - Start / Stop python web server to interact with local model
@@ -9,8 +9,12 @@
 ### Future features
 - Altering AI agents behavior during conversations
 - Embedding vector stores to create longer context
+- Use SurrealDB to persist memory
+- Replace Python webserver with Rust Llama implementation for more control
+- Multiple chats
 
 ### Requirements
+- create a folder called $HOME/models (I'll update this so the app simply creates the folder if it doesn't exist.)
 - Python
 - `pip install llama-cpp-python`
 - `pip install llama-cpp-python[server]`
